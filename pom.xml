@@ -3,10 +3,10 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>brzozowski.sebastian</groupId>
-    <artifactId>research</artifactId>
+    <artifactId>sandbox</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>research</name>
+    <name>sandbox</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -23,8 +23,47 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>1.57</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                <version>0.4.22</version>
+                <configuration>
+                    <sourcePaths>
+                        <sourcePath>src/main/resources/com.github.brzozas.wiremock/registerRequest.json</sourcePath>
+                    </sourcePaths>
+                    <outputDirectory>target/generated-sources</outputDirectory>
+                    <targetPackage>com.github.brzozas.wiremock</targetPackage>
+                    <includeJsr303Annotations>true</includeJsr303Annotations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
