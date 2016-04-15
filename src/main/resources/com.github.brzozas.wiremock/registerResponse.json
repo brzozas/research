@@ -1,0 +1,20 @@
+{
+  "id": "RegisterResponse",
+  "$schema": "http://json-schema.org/draft-03/schema#",
+  "javaType": "com.github.brzozas.wiremock.RegisterResponseDTO",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "required": true,
+      "enum": [
+        "OK",
+        "ERROR"
+      ]
+    },
+    "errorMessage": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

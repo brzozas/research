@@ -51,6 +51,7 @@
                 <configuration>
                     <sourcePaths>
                         <sourcePath>src/main/resources/com.github.brzozas.wiremock/registerRequest.json</sourcePath>
+                        <sourcePath>src/main/resources/com.github.brzozas.wiremock/registerResponse.json</sourcePath>
                     </sourcePaths>
                     <outputDirectory>target/generated-sources</outputDirectory>
                     <targetPackage>com.github.brzozas.wiremock</targetPackage>

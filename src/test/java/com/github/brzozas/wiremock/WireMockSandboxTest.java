@@ -1,6 +1,7 @@
 package com.github.brzozas.wiremock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.brzozas.JsonMapper;
 import com.github.tomakehurst.wiremock.client.RequestPatternBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -10,7 +11,9 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.boot.json.JsonParser;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -32,15 +35,19 @@ public class WireMockSandboxTest {
         //given
         final String path = "/acceptJson";
         RegisterRequestDTO requestBody = givenRegisterRequest();
-        stubFor(post(urlEqualTo(path)).willReturn(aResponse().withStatus(HttpStatus.OK.value()).withBody("")));
+        stubFor(post(urlEqualTo(path)).willReturn(aResponse()
+                .withStatus(HttpStatus.OK.value())
+                .withBody("{\"status\": \"OK\"}")
+                .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())));
 
         //when
-        objectUnderTest.sendJsonPostRequest(host+path, requestBody);
+        RegisterResponseDTO response = objectUnderTest.sendJsonPostRequest(host+path, requestBody);
         List<LoggedRequest> requests = findAll(RequestPatternBuilder.allRequests());
+        LoggedRequest request = requests.get(0);
 
         //then
-        String jsonString = new ObjectMapper().writeValueAsString(requestBody);
-        Assert.assertEquals(jsonString, requests.get(0).getBodyAsString());
+        Assert.assertEquals(RegisterResponseDTO.Status.OK, response.getStatus());
+        Assert.assertEquals(JsonMapper.mapToString(requestBody), request.getBodyAsString());
     }
 
     private RegisterRequestDTO givenRegisterRequest(){
